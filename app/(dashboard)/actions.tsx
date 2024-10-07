@@ -1,7 +1,6 @@
 "use server"
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { custom } from "zod";
 interface Link {
     title: string;
     url: string;
@@ -48,7 +47,7 @@ export async function setUserdata(userId: string, formData: FormData) {
     let imageUrl = null;
     if (imageFile?.size != 0) {
         // Upload image to Supabase Storage
-        const { data, error: uploadError } = await supabase
+        const { error: uploadError } = await supabase
             .storage
             .from('logoimage')  // Replace with your actual bucket name
             .upload(`public/${userId}/${imageFile?.name}`, imageFile!, {
@@ -100,7 +99,7 @@ export async function setUserdata(userId: string, formData: FormData) {
 
 export async function setCustLink(userId: string, links: Link[]) {
     const supabase = createClient();
-    const { data, error } = await supabase
+    const { error } = await supabase
         .from("userData")
         .update({ customLinks: JSON.stringify(links) })
         .eq('uuid', userId);

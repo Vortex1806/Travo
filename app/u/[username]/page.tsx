@@ -1,33 +1,12 @@
-import { Suspense, use } from 'react'
+import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
-import { Heart, Share2, ArrowUpRight, MapPin, ShoppingBag, Users, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 import Share from './share'
 
 const Loading = () => (
     <div className="flex items-center justify-center h-screen w-full bg-black">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-)
-
-interface CardProps {
-    title: string
-    content: React.ReactNode
-    icon?: React.ReactNode
-    color: string
-    className?: string
-}
-
-const Card: React.FC<CardProps> = ({ title, content, icon, color, className }) => (
-    <div className={`${color} rounded-3xl p-6 shadow-lg backdrop-blur-lg bg-opacity-30 ${className} transition-all duration-300 ease-in-out transform hover:scale-105`}>
-        <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center">
-                {icon && <div className="mr-3">{icon}</div>}
-                <h3 className="text-xl font-semibold text-white">{title}</h3>
-            </div>
-            <ArrowUpRight className="h-5 w-5 text-white opacity-75" />
-        </div>
-        <div className="text-white opacity-90">{content}</div>
     </div>
 )
 
@@ -189,7 +168,7 @@ async function DigitalBusinessCard({ username }: { username: string }) {
                 </div>
 
                 <CustomLinksCatalog links={userData.customlinks} />
-                
+
             </div>
         </div>
     )

@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signup } from "@/lib/auth-actions"
+import SignInWithGoogleButton from "../../login/components/signinwithgooglebtn"
 
 export const description =
     "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account"
@@ -55,7 +56,8 @@ export function SignUpForm() {
                             Create an account
                         </Button>
                         <Button variant="outline" className="w-full">
-                            Sign up with GitHub
+                            <   SignInWithGoogleButton />
+                            Sign up with Google
                         </Button>
                     </div>
                     <div className="mt-4 text-center text-sm">

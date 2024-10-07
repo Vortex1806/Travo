@@ -184,7 +184,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                                             onChange={(e) => handleImageChange(e)}
                                         />
                                         {selectedImage && (
-                                            <img
+                                            <Image
                                                 src={URL.createObjectURL(selectedImage)}
                                                 alt="Selected"
                                                 className="mt-2 h-40 w-40 object-cover"

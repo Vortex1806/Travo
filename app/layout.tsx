@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from 'next-themes'
 
 const geistSans = localFont({
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
   title: "TravoCard",
   description: "Get your digital business card",
 };
-const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,

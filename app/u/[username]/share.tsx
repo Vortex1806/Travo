@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Share2, X, Copy, Check } from 'lucide-react'
+import { Share2, Copy, Check } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
@@ -14,10 +14,10 @@ export default function Share() {
         setIsOpen(true)
     }, [])
 
-    const handleClose = useCallback(() => {
-        setIsOpen(false)
-        setIsCopied(false)
-    }, [])
+    // const handleClose = useCallback(() => {
+    //     setIsOpen(false)
+    //     setIsCopied(false)
+    // }, [])
 
     const copyToClipboard = useCallback(() => {
         navigator.clipboard.writeText(url).then(() => {
