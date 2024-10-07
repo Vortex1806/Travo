@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, use } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { Heart, Share2, ArrowUpRight, MapPin, ShoppingBag, Users, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
@@ -38,13 +38,11 @@ async function checkUsernameExists(username: string) {
         .from('userData')
         .select('userName')
         .eq('userName', username)
-        .single()
-
-    if (error || !data) {
+    if (error || data.length === 0) {
         console.error('Username not found or error fetching data:', error)
-        redirect('/login')
+        redirect('/error')
     }
-
+    console.log(data);
     return data
 }
 
@@ -68,6 +66,7 @@ async function fetchData(username: string) {
             facebook: data[0].socialLinks['facebook'],
             twitter: data[0].socialLinks['twitter'],
             instagram: data[0].socialLinks['instagram'],
+            linkedin: data[0].socialLinks['linkedin'],
             location: data[0].location as string,
             customlinks: JSON.parse(data[0].customLinks),
             logo: data[0].logo,
@@ -77,12 +76,9 @@ async function fetchData(username: string) {
     return null
 }
 
-interface Link {
-    title: string
-    url: string
-}
+
 import Image from 'next/image'
-import { Compass, Mail, MessageCircle, User } from 'lucide-react'
+import { MessageCircle, User } from 'lucide-react'
 import ThemeToggle from './themetoggle'
 function CustomLinksCatalog({ links }: { links: { title: string; url: string }[] }) {
     return (
@@ -106,6 +102,7 @@ function CustomLinksCatalog({ links }: { links: { title: string; url: string }[]
 }
 
 async function DigitalBusinessCard({ username }: { username: string }) {
+    await checkUsernameExists(username);
     const userData = await fetchData(username)
 
     if (!userData) {
@@ -119,22 +116,22 @@ async function DigitalBusinessCard({ username }: { username: string }) {
                     <div className="absolute top-4 right-4">
                         <Share />
                     </div>
-                    <div className="absolute top-4 right-4">
+                    <div className="absolute top-4 left-4">
                         <ThemeToggle />
                     </div>
 
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                        <div className="relative">
+                        <div className="relative w-32 h-32">
                             <Image
                                 src={userData.logo}
                                 alt="Profile picture"
-                                width={120}
-                                height={120}
+                                layout="fill"
+                                objectFit="cover"
                                 className="rounded-full border-4 border-white dark:border-gray-800"
                             />
-
                         </div>
                     </div>
+
                 </div>
                 <div className="pt-16 pb-6 px-6 text-center">
                     <h2 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{userData.bizname} <span className="text-blue-500">✓</span></h2>
@@ -150,144 +147,58 @@ async function DigitalBusinessCard({ username }: { username: string }) {
                         <User className="w-8 h-8 text-gray-400 dark:text-gray-300 mb-1" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">Save My Info</span>
                     </a>
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <a href={`https://wa.me/${userData.phone}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                         <MessageCircle className="w-8 h-8 text-green-500 mb-1" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">WhatsApp</span>
                     </a>
-                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <a href={`${userData.location}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
                         <MapPin className="w-8 h-8 text-red-500 mb-1" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">Directions</span>
                     </a>
                 </div>
 
-                <div className="flex justify-around border-t border-gray-200 dark:border-gray-700 p-4">
-                    <a href="#facebook" className="text-blue-600 dark:text-blue-400">
-                        <Facebook className="w-6 h-6" />
-                    </a>
-                    <a href="#twitter" className="text-blue-400 dark:text-blue-300">
-                        <Twitter className="w-6 h-6" />
-                    </a>
-                    <a href="#linkedin" className="text-blue-700 dark:text-blue-500">
-                        <Linkedin className="w-6 h-6" />
-                    </a>
+                <div className="p-4">
+                    <h2 className="text-xl font-bold mb-2">Social Links</h2>
+                    <div className="flex overflow-x-auto whitespace-nowrap border-t border-gray-200 dark:border-gray-700 p-2">
+                        {userData.facebook.length > 0 && (
+                            <a href={userData.facebook.startsWith('http') ? userData.facebook.url : `https://${userData.facebook}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                                <Facebook className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-1" />
+                                <span className="text-xs text-gray-500 dark:text-gray-400">Facebook</span>
+                            </a>
+                        )}
+                        {userData.twitter.length > 0 && (
+
+                            <a href={userData.twitter.startsWith('http') ? userData.twitter.url : `https://${userData.twitter}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                                <Twitter className="w-8 h-8 text-blue-400 dark:text-blue-300 mb-1" />
+                                <span className="text-xs text-gray-500 dark:text-gray-400">Twitter</span>
+                            </a>
+                        )}
+                        {userData.linkedin.length > 0 && (
+                            <a href={userData.linkedin.startsWith('http') ? userData.linkedin.url : `https://${userData.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                                <Linkedin className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
+                                <span className="text-xs text-gray-500 dark:text-gray-400">LinkedIn</span>
+                            </a>
+                        )}
+                        {userData.instagram.length > 0 && (
+                            <a href={userData.instagram.startsWith('http') ? userData.instagram.url : `https://${userData.instagram}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                                <Instagram className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
+                                <span className="text-xs text-gray-500 dark:text-gray-400">Instagram</span>
+                            </a>
+                        )}
+                    </div>
                 </div>
 
                 <CustomLinksCatalog links={userData.customlinks} />
+                
             </div>
         </div>
     )
 }
 
-async function Component2({ username }: { username: string }) {
-    const userData = await fetchData(username)
-
-    if (!userData) {
-        return <div>Error: User data not found</div>
-    }
-
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-black to-blue-900 p-6 text-white">
-            <div className="max-w-4xl mx-auto">
-                <header className="flex justify-between items-center mb-8 p-6 bg-white bg-opacity-10 rounded-lg shadow-lg backdrop-blur-md transition-all duration-300 ease-in-out transform hover:bg-opacity-20">
-                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-                        {userData.bizname}
-                    </h1>
-                    <div className="flex items-center space-x-6">
-                        <Share />
-                    </div>
-                </header>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <Card
-                        title="Business Details"
-                        icon={<div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold"></div>}
-                        content={
-                            <div className="space-y-2">
-                                <p><strong>Email:</strong> <a href={`mailto:${userData.email}`} className="text-blue-300 hover:underline">{userData.email}</a></p>
-                                <p><strong>Phone:</strong> <a href={`tel:${userData.phone}`} className="text-blue-300 hover:underline">{userData.phone}</a></p>
-                                <p className="mt-4">{userData.aboutUs}</p>
-                            </div>
-                        }
-                        color="bg-blue-600"
-                        className="md:col-span-2 lg:col-span-3"
-                    />
-
-                    <Card
-                        title="Social Media"
-                        icon={<Users className="h-8 w-8 text-white" />}
-                        content={
-                            <div className="space-y-4">
-                                <a href={userData.facebook.startsWith('http') ? userData.facebook : `https://${userData.facebook}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-blue-300 transition duration-300">
-                                    <Facebook className="h-5 w-5 mr-2" /> Facebook
-                                </a>
-                                <a href={userData.twitter.startsWith('http') ? userData.twitter : `https://${userData.twitter}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-blue-300 transition duration-300">
-                                    <Twitter className="h-5 w-5 mr-2" /> Twitter
-                                </a>
-                                <a href={userData.instagram.startsWith('http') ? userData.instagram : `https://${userData.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-blue-300 transition duration-300">
-                                    <Instagram className="h-5 w-5 mr-2" /> Instagram
-                                </a>
-                            </div>
-                        }
-                        color="bg-green-600"
-                    />
-
-                    <Card
-                        title="Location"
-                        icon={<MapPin className="h-8 w-8 text-white" />}
-                        content={
-                            <div>
-                                <p className="mb-2">{userData.location}</p>
-                                <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
-                                    <iframe
-                                        src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.0167387869!2d77.57314861482183!3d12.963636190866334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15e2fc1de573%3A0x69e806c752cb97ae!2sGovernment%20Dental%20College%20%26%20Research%20Centre%2C%20Bengaluru%2C%20Karnataka%20560002!5e0!3m2!1sen!2sin!4v1633512615050!5m2!1sen!2sin'
-                                        width="100%"
-                                        height="200"
-                                        style={{ border: 0 }}
-                                        allowFullScreen
-                                        loading="lazy"
-                                    ></iframe>
-                                </div>
-                            </div>
-                        }
-                        color="bg-purple-600"
-                    />
-
-                    <Card
-                        title="Our Catalog"
-                        icon={<ShoppingBag className="h-8 w-8 text-white" />}
-                        content={
-                            <div className="space-y-4">
-                                {userData.customlinks.map((link: Link, index: number) => (
-                                    <div
-                                        key={index}
-                                        className="bg-white bg-opacity-10 p-4 rounded-lg hover:bg-opacity-20 transition duration-300 transform hover:scale-105"
-                                    >
-                                        <h4 className="text-lg font-semibold text-white mb-2">{link.title}</h4>
-                                        <a
-                                            href={link.url.startsWith('http') ? link.url : `https://${link.url}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-blue-300 hover:underline"
-                                        >
-                                            {link.url}
-                                        </a>
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        color="bg-red-600"
-                        className="md:col-span-2 lg:col-span-3"
-                    />
-                </div>
-            </div>
-        </div>
-    )
-}
 
 export default function MyLinkPage({ params }: { params: { username: string } }) {
     return (
         <Suspense fallback={<Loading />}>
-            {/* <Component2 username={params.username} /> */}
             <DigitalBusinessCard username={params.username} />
         </Suspense>
     )
