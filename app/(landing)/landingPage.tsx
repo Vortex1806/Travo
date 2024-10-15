@@ -100,6 +100,7 @@
 // }
 
 // export default LandingPage;
+import LoginButton from "@/components/LoginLogoutButton";
 import { Link as LinkIcon, Zap, Shield } from "lucide-react";
 import Link from "next/link";
 
@@ -176,11 +177,12 @@ const LandingPage = () => {
                                     Join thousands of businesses who have already transformed their digital presence with LinkBiz.
                                 </p>
                             </div>
-                            <Link href="/login">
+                            {/* <Link href="/login">
                                 <button className="px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 via-blue-500 to-teal-500 text-white font-bold transition-all hover:scale-105 shadow-md">
                                     Get Started
                                 </button>
-                            </Link>
+                            </Link> */}
+                            <LoginButton />
                         </div>
                     </div>
                 </section>

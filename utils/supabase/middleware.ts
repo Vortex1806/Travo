@@ -1,3 +1,4 @@
+import { protectedPaths } from '@/lib/constants'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -53,8 +54,16 @@ export async function updateSession(request: NextRequest) {
             },
         }
     )
-
+    const url = new URL(request.url);
+    const { data, error } = await supabase.auth.getSession();
     await supabase.auth.getUser()
+    if (error) {
+        if (protectedPaths.includes(url.pathname)) {
+            return NextResponse.redirect(new URL("/login?next=/", request.url));
+        }
+        return response;
+    }
+
 
     return response
 }

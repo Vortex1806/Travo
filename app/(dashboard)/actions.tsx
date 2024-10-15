@@ -30,7 +30,12 @@ async function geturl(userid: string, imagename: string) {
     const { data } = supabase
         .storage
         .from('logoimage')
-        .getPublicUrl(`public/${userid}/${imagename}`);
+        .getPublicUrl(`public/${userid}/${imagename}`, {
+            transform: {
+                width: 200,
+                height: 200,
+            },
+        });
 
     return data.publicUrl; // Image URL is ready to be saved in DB
 }

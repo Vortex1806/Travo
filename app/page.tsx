@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import LandingPage from "./(landing)/landingPage";
-import DashBoardUI from "./(dashboard)/dash";
+import DashBoardUI from "./(dashboard)/page";
 import SetUserNamePage from "./(setusername)/setuser";
 
 async function checkUser() {
@@ -29,7 +29,7 @@ export default async function MainPage() {
   if (user) {
     const check = await checkUserAvailable(user.id);
     if (check) {
-      return <DashBoardUI userId={user.id}/>
+      return <DashBoardUI userId={user.id} />
     } else {
       return <SetUserNamePage userId={user.id} />
     }

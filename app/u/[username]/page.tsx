@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
 import Share from './share'
+import SaveContact from './savecontact'
 
 const Loading = () => (
     <div className="flex items-center justify-center h-screen w-full bg-black">
@@ -80,100 +81,193 @@ function CustomLinksCatalog({ links }: { links: { title: string; url: string }[]
     )
 }
 
+// async function DigitalBusinessCard({ username }: { username: string }) {
+//     await checkUsernameExists(username);
+//     const userData = await fetchData(username)
+
+//     if (!userData) {
+//         return <div>Error: User data not found</div>
+//     }
+
+//     return (
+//         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+//             <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden max-w-md w-full">
+//                 <div className="relative h-48 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-700 dark:to-gray-600">
+//                     <div className="absolute top-4 right-4">
+//                         <Share />
+//                     </div>
+//                     <div className="absolute top-4 left-4">
+//                         <ThemeToggle />
+//                     </div>
+
+//                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+//                         <div className="relative w-32 h-32">
+//                             <Image
+//                                 src={userData.logo}
+//                                 alt="Profile picture"
+//                                 layout="fill"
+//                                 objectFit="cover"
+//                                 className="rounded-full border-4 border-white dark:border-gray-800"
+//                             />
+//                         </div>
+//                     </div>
+
+//                 </div>
+//                 <div className="pt-16 pb-6 px-6 text-center">
+//                     <h2 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{userData.bizname} <span className="text-blue-500">✓</span></h2>
+//                     <p className="text-gray-500 dark:text-gray-400 text-sm">Bangalore, Karnataka</p>
+//                     <p className="mt-4 text-gray-600 dark:text-gray-300">{userData.aboutUs}</p>
+//                     <a href="#connect" className="mt-6 bg-black dark:bg-white text-white dark:text-black w-full py-3 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition duration-200 inline-block">
+//                         Connect With Me
+//                     </a>
+//                 </div>
+
+//                 <div className="grid grid-cols-3 border-t border-gray-200 dark:border-gray-700">
+//                     <a href="#save-info" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+//                         <User className="w-8 h-8 text-gray-400 dark:text-gray-300 mb-1" />
+//                         <span className="text-xs text-gray-500 dark:text-gray-400">Save My Info</span>
+//                     </a>
+//                     <a href={`https://wa.me/${userData.phone}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+//                         <MessageCircle className="w-8 h-8 text-green-500 mb-1" />
+//                         <span className="text-xs text-gray-500 dark:text-gray-400">WhatsApp</span>
+//                     </a>
+//                     <a href={`${userData.location}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+//                         <MapPin className="w-8 h-8 text-red-500 mb-1" />
+//                         <span className="text-xs text-gray-500 dark:text-gray-400">Directions</span>
+//                     </a>
+//                 </div>
+
+//                 <div className="p-4">
+//                     <h2 className="text-xl font-bold mb-2">Social Links</h2>
+//                     <div className="flex overflow-x-auto whitespace-nowrap border-t border-gray-200 dark:border-gray-700 p-2">
+//                         {userData.facebook.length > 0 && (
+//                             <a href={userData.facebook.startsWith('http') ? userData.facebook.url : `https://${userData.facebook}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+//                                 <Facebook className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-1" />
+//                                 <span className="text-xs text-gray-500 dark:text-gray-400">Facebook</span>
+//                             </a>
+//                         )}
+//                         {userData.twitter.length > 0 && (
+
+//                             <a href={userData.twitter.startsWith('http') ? userData.twitter.url : `https://${userData.twitter}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+//                                 <Twitter className="w-8 h-8 text-blue-400 dark:text-blue-300 mb-1" />
+//                                 <span className="text-xs text-gray-500 dark:text-gray-400">Twitter</span>
+//                             </a>
+//                         )}
+//                         {userData.linkedin.length > 0 && (
+//                             <a href={userData.linkedin.startsWith('http') ? userData.linkedin.url : `https://${userData.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+//                                 <Linkedin className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
+//                                 <span className="text-xs text-gray-500 dark:text-gray-400">LinkedIn</span>
+//                             </a>
+//                         )}
+//                         {userData.instagram.length > 0 && (
+//                             <a href={userData.instagram.startsWith('http') ? userData.instagram.url : `https://${userData.instagram}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+//                                 <Instagram className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
+//                                 <span className="text-xs text-gray-500 dark:text-gray-400">Instagram</span>
+//                             </a>
+//                         )}
+//                     </div>
+//                 </div>
+
+//                 <CustomLinksCatalog links={userData.customlinks} />
+
+//             </div>
+//         </div>
+//     )
+// }
+
 async function DigitalBusinessCard({ username }: { username: string }) {
+
     await checkUsernameExists(username);
-    const userData = await fetchData(username)
+    const userData = await fetchData(username);
 
     if (!userData) {
-        return <div>Error: User data not found</div>
+        return <div>Error: User data not found</div>;
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden max-w-md w-full">
-                <div className="relative h-48 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-700 dark:to-gray-600">
-                    <div className="absolute top-4 right-4">
-                        <Share />
-                    </div>
-                    <div className="absolute top-4 left-4">
-                        <ThemeToggle />
-                    </div>
-
-                    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                        <div className="relative w-32 h-32">
-                            <Image
-                                src={userData.logo}
-                                alt="Profile picture"
-                                layout="fill"
-                                objectFit="cover"
-                                className="rounded-full border-4 border-white dark:border-gray-800"
-                            />
-                        </div>
-                    </div>
-
+        <div className="min-h-screen bg-black dark:bg-gray-900 flex items-center justify-center p-4">
+            <div className="bg-black dark:bg-black rounded-3xl shadow-xl overflow-hidden max-w-md w-full">
+                {/* Header Section */}
+                <div className="flex justify-between items-center p-2 bg-gray-200 dark:bg-black">
+                    <ThemeToggle />
+                    <Share />
                 </div>
-                <div className="pt-16 pb-6 px-6 text-center">
-                    <h2 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">{userData.bizname} <span className="text-blue-500">✓</span></h2>
+
+                {/* Profile Picture */}
+                <div className="flex justify-center mt-6">
+                    <div className="relative w-32 h-32">
+                        <Image
+                            src={userData.logo}
+                            alt="Profile picture"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-full border-4 border-white dark:border-gray-800"
+                        />
+                    </div>
+                </div>
+
+                {/* User Info */}
+                <div className="pt-6 pb-6 px-6 text-center">
+                    <h2 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">
+                        {userData.bizname} <span className="text-blue-500">✓</span>
+                    </h2>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Bangalore, Karnataka</p>
                     <p className="mt-4 text-gray-600 dark:text-gray-300">{userData.aboutUs}</p>
-                    <a href="#connect" className="mt-6 bg-black dark:bg-white text-white dark:text-black w-full py-3 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition duration-200 inline-block">
+                    {/* <a href="#connect" className="mt-6 bg-blue-600 dark:bg-blue-400 text-white dark:text-gray-900 w-full py-3 rounded-full font-bold hover:bg-blue-700 dark:hover:bg-blue-500 transition duration-200 inline-block">
                         Connect With Me
-                    </a>
+                    </a> */}
                 </div>
 
+                {/* Action Buttons */}
                 <div className="grid grid-cols-3 border-t border-gray-200 dark:border-gray-700">
-                    <a href="#save-info" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <User className="w-8 h-8 text-gray-400 dark:text-gray-300 mb-1" />
-                        <span className="text-xs text-gray-500 dark:text-gray-400">Save My Info</span>
-                    </a>
-                    <a href={`https://wa.me/${userData.phone}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <SaveContact />
+                    <a href={`https://wa.me/${userData.phone}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                         <MessageCircle className="w-8 h-8 text-green-500 mb-1" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">WhatsApp</span>
                     </a>
-                    <a href={`${userData.location}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <a href={`${userData.location}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                         <MapPin className="w-8 h-8 text-red-500 mb-1" />
                         <span className="text-xs text-gray-500 dark:text-gray-400">Directions</span>
                     </a>
                 </div>
 
+                {/* Social Links */}
                 <div className="p-4">
-                    <h2 className="text-xl font-bold mb-2">Social Links</h2>
+                    <h2 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Social Links</h2>
                     <div className="flex overflow-x-auto whitespace-nowrap border-t border-gray-200 dark:border-gray-700 p-2">
-                        {userData.facebook.length > 0 && (
-                            <a href={userData.facebook.startsWith('http') ? userData.facebook.url : `https://${userData.facebook}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                        {userData.facebook && (
+                            <a href={userData.facebook.startsWith('http') ? userData.facebook : `https://${userData.facebook}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 mx-2 transition">
                                 <Facebook className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-1" />
                                 <span className="text-xs text-gray-500 dark:text-gray-400">Facebook</span>
                             </a>
                         )}
-                        {userData.twitter.length > 0 && (
-
-                            <a href={userData.twitter.startsWith('http') ? userData.twitter.url : `https://${userData.twitter}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                        {userData.twitter && (
+                            <a href={userData.twitter.startsWith('http') ? userData.twitter : `https://${userData.twitter}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 mx-2 transition">
                                 <Twitter className="w-8 h-8 text-blue-400 dark:text-blue-300 mb-1" />
                                 <span className="text-xs text-gray-500 dark:text-gray-400">Twitter</span>
                             </a>
                         )}
-                        {userData.linkedin.length > 0 && (
-                            <a href={userData.linkedin.startsWith('http') ? userData.linkedin.url : `https://${userData.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
+                        {userData.linkedin && (
+                            <a href={userData.linkedin.startsWith('http') ? userData.linkedin : `https://${userData.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 mx-2 transition">
                                 <Linkedin className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
                                 <span className="text-xs text-gray-500 dark:text-gray-400">LinkedIn</span>
                             </a>
                         )}
-                        {userData.instagram.length > 0 && (
-                            <a href={userData.instagram.startsWith('http') ? userData.instagram.url : `https://${userData.instagram}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-50 dark:hover:bg-gray-700 mx-2">
-                                <Instagram className="w-8 h-8 text-blue-700 dark:text-blue-500 mb-1" />
+                        {userData.instagram && (
+                            <a href={userData.instagram.startsWith('http') ? userData.instagram : `https://${userData.instagram}`} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center p-4 hover:bg-gray-100 dark:hover:bg-gray-700 mx-2 transition">
+                                <Instagram className="w-8 h-8 text-purple-600 dark:text-purple-400 mb-1" />
                                 <span className="text-xs text-gray-500 dark:text-gray-400">Instagram</span>
                             </a>
                         )}
                     </div>
                 </div>
 
+                {/* Custom Links */}
                 <CustomLinksCatalog links={userData.customlinks} />
-
             </div>
         </div>
-    )
+    );
 }
-
 
 export default function MyLinkPage({ params }: { params: { username: string } }) {
     return (

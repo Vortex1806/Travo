@@ -1,7 +1,4 @@
-
 "use client"
-
-
 
 import { useEffect, useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
@@ -44,6 +41,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
     const [email, setEmail] = useState("");
     const [about, setabout] = useState("");
     const [logourl, setlogo] = useState("");
+    const [username, setusername] = useState("");
     const [socialLinks, setSocial] = useState<SocialLinks>({
         facebook: '',
         instagram: '',
@@ -69,6 +67,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                 LogoutPage();
             }
             if (data) {
+                setusername(data[0].userName);
                 setCity(data[0].city)
                 setCountry(data[0].country);
                 setBusiness(data[0].businessName);
@@ -150,6 +149,18 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
             <header className="bg-card shadow">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <h1 className="text-2xl font-bold">Business Dashboard</h1>
+
+                    {username && <div className="flex flex-col items-center p-4 border border-gray-300 rounded-lg shadow-md w-full max-w-xs">
+                        <a
+                            href={`http://localhost:3000/u/${username}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white-600 hover:underline  w-full text-center"
+                        >
+                            http://localhost:3000/u/{username}
+
+                        </a>
+                    </div>}
                     <div className="flex items-center space-x-4">
                         <Button variant="ghost" size="icon" onClick={toggleTheme}>
                             {theme === 'dark' ? <Sun className="h-[1.2rem] w-[1.2rem]" /> : <Moon className="h-[1.2rem] w-[1.2rem]" />}
@@ -180,14 +191,18 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                                             id="imageUpload"
                                             type="file"
                                             name="logo"
+                                            height={200}
+                                            width={200}
                                             accept="image/*"
                                             onChange={(e) => handleImageChange(e)}
                                         />
                                         {selectedImage && (
                                             <Image
                                                 src={URL.createObjectURL(selectedImage)}
+                                                height={100}
+                                                width={100}
                                                 alt="Selected"
-                                                className="mt-2 h-40 w-40 object-cover"
+                                                className=" h-40 w-40 object-contain"
                                             />
                                         )}
                                     </div>
