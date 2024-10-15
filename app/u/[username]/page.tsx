@@ -63,7 +63,7 @@ import ThemeToggle from './themetoggle'
 function CustomLinksCatalog({ links }: { links: { title: string; url: string }[] }) {
     return (
         <div className="mt-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-semibold my-2 px-4 text-gray-900 dark:text-white">Custom Links</h3>
+            <h3 className="text-lg font-semibold my-2 px-4 text-gray-900 dark:text-white">Our Products</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto px-4">
                 {links.map((link, index) => (
                     <a

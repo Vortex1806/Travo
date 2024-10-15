@@ -173,7 +173,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                 <Tabs defaultValue="info" className="space-y-4">
                     <TabsList>
                         <TabsTrigger value="info">Information</TabsTrigger>
-                        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                        {/* <TabsTrigger value="analytics">Analytics</TabsTrigger> */}
                     </TabsList>
                     <TabsContent value="info">
                         <form>
@@ -344,7 +344,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                         <Card>
                             <CardHeader>
                                 <CardTitle>Custom Links</CardTitle>
-                                <CardDescription>Add and manage your custom links</CardDescription>
+                                <CardDescription>Add and manage your custom product links</CardDescription>
                             </CardHeader>
                             <CardContent>
                                 <form action="" className="space-y-4" onSubmit={handleAddLink}>
@@ -391,7 +391,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                             </CardContent>
                         </Card>
                     </TabsContent>
-                    <TabsContent value="analytics">
+                    {/* <TabsContent value="analytics">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Analytics</CardTitle>
@@ -420,7 +420,7 @@ export default function DashBoardUI({ userId }: SetUserNamePageProps) {
                                 </div>
                             </CardContent>
                         </Card>
-                    </TabsContent>
+                    </TabsContent> */}
                 </Tabs>
             </main>
         </div>
