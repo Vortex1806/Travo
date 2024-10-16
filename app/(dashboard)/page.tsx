@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Facebook, Instagram, Linkedin, Twitter, MapPin, User, Moon, Sun } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, MapPin, Moon, Sun } from "lucide-react";
 import LoginButton from "@/components/LoginLogoutButton";
 import { getUserdata, setUserdata, setCustLink } from "./actions";
 import LogoutPage from "../(auth)/logout/page";

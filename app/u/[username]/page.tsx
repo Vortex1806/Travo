@@ -58,7 +58,7 @@ async function fetchData(username: string) {
 
 
 import Image from 'next/image'
-import { MessageCircle, User } from 'lucide-react'
+import { MessageCircle } from 'lucide-react'
 import ThemeToggle from './themetoggle'
 function CustomLinksCatalog({ links }: { links: { title: string; url: string }[] }) {
     return (
