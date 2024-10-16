@@ -185,10 +185,10 @@ async function DigitalBusinessCard({ username }: { username: string }) {
     }
 
     return (
-        <div className="min-h-screen bg-black dark:bg-gray-900 flex items-center justify-center p-4">
-            <div className="bg-black dark:bg-black rounded-3xl shadow-xl overflow-hidden max-w-md w-full">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden max-w-md w-full">
                 {/* Header Section */}
-                <div className="flex justify-between items-center p-2 bg-gray-200 dark:bg-black">
+                <div className="flex justify-between items-center p-2 bg-white dark:bg-gray-800">
                     <ThemeToggle />
                     <Share />
                 </div>
