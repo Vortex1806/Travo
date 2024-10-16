@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "TravoCard",
+  title: "BizCard",
   description: "Get your digital business card",
 };
 

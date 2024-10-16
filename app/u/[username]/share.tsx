@@ -14,19 +14,13 @@ export default function Share() {
         setIsOpen(true)
     }, [])
 
-    // const handleClose = useCallback(() => {
-    //     setIsOpen(false)
-    //     setIsCopied(false)
-    // }, [])
-
     const copyToClipboard = useCallback(() => {
         navigator.clipboard.writeText(url).then(() => {
             setIsCopied(true)
-            setTimeout(() => setIsCopied(false), 2000) // Reset copied state after 2 seconds
+            setTimeout(() => setIsCopied(false), 2000) 
         })
     }, [url])
 
-    // This effect will run only in the browser
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setUrl(window.location.href)

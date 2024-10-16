@@ -67,14 +67,13 @@ export async function signInWithGoogle() {
                 access_type: "offline",
                 prompt: "consent",
             },
-            redirectTo: "/auth/callback?next=/",
         },
     });
 
     if (error) {
-        console.log(error);
         redirect("/error");
     }
 
+    revalidatePath("/", "layout");
     redirect(data.url);
 }
